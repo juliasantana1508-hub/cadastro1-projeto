@@ -1,92 +1,167 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Tela de Cadastro</title>
+<meta charset="UTF-8">
+<title>Cadastro</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right top, #fff7c4, #ffe2b6, #ffcdb9, #ffbbcb, #fcb1e4, #ddbaf8, #b8c3ff, #95caff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-            /* COLE SEU GRADIENTE AQUI */
-            background: linear-gradient(to right top, #fff7c4, #ffe2b6, #ffcdb9, #ffbbcb, #fcb1e4, #ddbaf8, #b8c3ff, #95caff, #8ed9ff, #91e7ff, #9df4fe, #b0fffa);
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 320px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    h2 {
+        text-align: center;
+    }
 
-            height: 100vh;
-            margin: 0;
-        }
+    .campo {
+        margin-bottom: 15px;
+    }
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 300px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
 
-        .campo {
-            margin-bottom: 15px;
-        }
+    input:focus {
+        border-color: #95caff;
+        outline: none;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+    .erro {
+        color: red;
+        font-size: 12px;
+    }
 
-        input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
+    .sucesso {
+        color: green;
+        text-align: center;
+        margin-top: 10px;
+    }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #B0FFFA;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #95caff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-        button:hover {
-            background: #8ac7c3;
-        }
-    </style>
+    button:hover {
+        background: #6fb2e6;
+    }
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Criar Conta</h2>
 
-        <form>
-            <div class="campo">
-                <label>Nome</label>
-                <input type="text" placeholder="Seu nome">
-            </div>
+<div class="container">
+    <h2>Criar Conta</h2>
 
-            <div class="campo">
-                <label>E-mail</label>
-                <input type="email" placeholder="email@exemplo.com">
-            </div>
+    <form id="formCadastro">
 
-            <div class="campo">
-                <label>Senha</label>
-                <input type="password">
-            </div>
+        <div class="campo">
+            <label>Nome</label>
+            <input type="text" id="nome">
+            <div class="erro" id="erroNome"></div>
+        </div>
 
-            <button>Cadastrar</button>
-        </form>
-    </div>
+        <div class="campo">
+            <label>E-mail</label>
+            <input type="email" id="email">
+            <div class="erro" id="erroEmail"></div>
+        </div>
+
+        <div class="campo">
+            <label>Senha</label>
+            <input type="password" id="senha">
+            <div class="erro" id="erroSenha"></div>
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <div class="sucesso" id="mensagem"></div>
+</div>
+
+<script>
+    const form = document.getElementById("formCadastro");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Pegando valores
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const senha = document.getElementById("senha").value.trim();
+
+        // Limpando erros
+        document.getElementById("erroNome").innerText = "";
+        document.getElementById("erroEmail").innerText = "";
+        document.getElementById("erroSenha").innerText = "";
+        document.getElementById("mensagem").innerText = "";
+
+        let valido = true;
+
+        // Validação nome
+        if(nome === "") {
+            document.getElementById("erroNome").innerText = "Digite seu nome";
+            valido = false;
+        }
+
+        // Validação email
+        if(email === "") {
+            document.getElementById("erroEmail").innerText = "Digite seu email";
+            valido = false;
+        } else if(!email.includes("@")) {
+            document.getElementById("erroEmail").innerText = "Email inválido";
+            valido = false;
+        }
+
+        // Validação senha
+        if(senha.length < 6) {
+            document.getElementById("erroSenha").innerText = "Senha deve ter no mínimo 6 caracteres";
+            valido = false;
+        }
+
+        // Se estiver tudo certo
+        if(valido) {
+            document.getElementById("mensagem").innerText = "Cadastro realizado com sucesso!";
+
+            console.log({
+                nome: nome,
+                email: email,
+                senha: senha
+            });
+
+            form.reset();
+        }
+    });
+</script>
+
 </body>
 </html>
